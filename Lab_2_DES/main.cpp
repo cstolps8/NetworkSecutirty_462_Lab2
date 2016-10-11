@@ -30,19 +30,21 @@ int convBinDec(long);
 int msg[64]; //The message that has to be encrypted msg[] stores the binary values, each element is 1 bit
 int size;
 const int ENCARYSIZE = 16;
+
 int main()
 {
 
-	int IniPerm[64] = {58, 50, 42, 34, 26, 18, 10, 2,
-			60, 52, 44, 36, 28, 20, 12, 4,
-			62, 54, 46, 38, 30, 22, 14, 6,
-			64, 56, 48, 40, 32, 24, 16, 8,
-			57, 49, 41, 33, 25, 17, 9, 1,
-			59, 51, 43, 35, 27, 19, 11, 3,
-			61, 53, 45, 37, 29, 21, 13, 5,
-			63, 55, 47, 39, 31, 23, 15, 7};
 
-	int encArry[ENCARYSIZE] = {6, 7, 5, 'a', 6, 9, 6, 7,5,'e',5,'a',6,'b',5,'a'};
+	int IniPerm[64] = {58, 50, 42, 34, 26, 18, 10, 2,
+		60, 52, 44, 36, 28, 20, 12, 4,
+		62, 54, 46, 38, 30, 22, 14, 6,
+		64, 56, 48, 40, 32, 24, 16, 8,
+		57, 49, 41, 33, 25, 17, 9, 1,
+		59, 51, 43, 35, 27, 19, 11, 3,
+		61, 53, 45, 37, 29, 21, 13, 5,
+		63, 55, 47, 39, 31, 23, 15, 7};
+
+	int encArry[ENCARYSIZE] = {6, 7, 5, 'a', 6, 9, 6, 7, 5, 'e', 5, 'a', 6, 'b', 5, 'a'};
 	for (int i = 0; i < ENCARYSIZE; i++) {
 		if (encArry[i] == 'a') {
 			encArry[i] = 10;
@@ -58,14 +60,14 @@ int main()
 			encArry[i] = 15;
 		}
 	}
-	
+
 	int encryptedBinMsg[64];
 	for (int i = 0; i < 64; i++) {
-		encryptedBinMsg[i] = 0;// initialize all elements to 0
+		// initialize all elements to 0
+		msg[i] = 0;
+		encryptedBinMsg[i] = 0;
 
 	}
-	
-	
 
 
 
@@ -81,43 +83,45 @@ int main()
 
 	int val;
 	convBinDec(k);
-	
+	size = 0;
 	//sends each element of encArry[] to get its binary value 
 	for (int i = 0; i < ENCARYSIZE; i++) {
 		val = encArry[i];
 		addBin(val);
 
 	}
-	
-	//
+
+
+
 	//do the encryption here
 	//the first bit of the output is taken from the 58th bit from the input, the second bit of the
-			//output is the 50th bit if the input, and so on.
+	//output is the 50th bit if the input, and so on.
 	for (int i = 0; i < 64; i++) {
 		encryptedBinMsg[i] = msg[IniPerm[i]];
-		
+
 
 	}
-	//print encrypted binary  message
-	for (int i = 0; i < 64; i++) {
-		
-		//cout<<"encrypted msg = "<<encryptedBinMsg[i]<<" i= "<<i;
-		cout<<encryptedBinMsg[i];
-		if(i%8 == 0)
-			cout<<endl;
-
+	//print encrypted binary  message	//this dosent print correctly
+	for (int i = 1; i < 65; i++) {
+		//	cout << encryptedBinMsg[i-1];
+		if (i % 8 == 0) {
+			//	cout << endl;
+		}
 	}
 
-	//print encArray binary elements 
-	for (int i = 0; i < 64; i++) {
-		//cout << msg[i];
-
+	//print encArry binary elements //this prints correctly
+	for (int i = 1; i < 65; i++) {
+		cout << msg[i - 1];
+		if (i % 8 == 0) {
+			cout << endl;
+		}
 	}
 
 	return 0;
 }
 
 // addBin takes the encArry and converts the elements into their 4 bit bites and stores them into msg[]
+
 int addBin(int val)
 {
 
@@ -125,12 +129,8 @@ int addBin(int val)
 	// bitset reads right to left this loop makes bitset store from left to right into msg for example
 	// 1110 for 7 it is now correctly put in as 0111
 	for (int i = 3; i >= 0; i--) {
-
-		msg[size] = A[i];
-		size++; // is a pointer to msg[] next open element to write to
-
+		msg[size++] = A[i];
 	}
-
 
 }
 
